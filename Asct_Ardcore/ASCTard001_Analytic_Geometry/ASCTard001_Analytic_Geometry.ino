@@ -48,8 +48,8 @@ int mode = 1;
 int recstep = 0;
 //pattern length
 int rec_step_max = 64;
-
-
+//pattern playback variable
+int auto_pat_pos = 0;
 
 //  limit changes to the sequencer to require a 100ms pause
 int lastPos = -1;
@@ -88,50 +88,88 @@ void loop()
      //get our x/y values for grid lookup
      //we make our input between 0 and 7 so we have 8 steps in each direction to choose from
 
-  
-  if (mode < 4){
+  //if we are in record
+  if (mode < 3){
         //reset clock state
       clkState = LOW;
-      //in record mode so make a recording
+      //get the input value from a2
       int recval = quantNote(analogRead(2));
-      //then record value at a2 into matrix
+      //then record value at the step we are at
       seq_array[recstep]=recval;
-      //increase record step unless step is at 64 in which case reset to 0
-      //set our recording step and make it wrap around
       //pass our input through the output
       dacOutput(recval);
+      //increase record step unless step is at 64 in which case reset to 0
       if (recstep == 0) {
+        //if sequence is at start red light comes on
         digitalWrite(digPin[1], HIGH);
         recstep++;
       } else if(recstep < 63){
-       //lets have some feedback that we recorded a step
+       //green light for step
       digitalWrite(digPin[0], HIGH);
+      //set digstates
       digState[0] = HIGH;
       digHIGH[0] = millis();
+      //increase the step
       recstep++;
       } else {
+        //if the recstep is > 63
        recstep = 0;
       }
 
-    } else if (mode > 4 ) {
+    } else if (mode >= 3 && mode < 5) {
+      //this mode mixes in some of the original when both inputs hit 0
+       //get our x/y values for grid lookup
+      int temp_x = analogRead(2) >> 7;
+      int temp_y = analogRead(3) >> 7;
+      clkState = LOW;
+      if(temp_x == 0 && temp_y == 0){
+        dacOutput(seq_array[auto_pat_pos]);
+        //set our digital outs high for triggers
+        digitalWrite(digPin[0], HIGH);
+        digitalWrite(digPin[1], HIGH);
+        //set the info in our array
+        digState[0] = HIGH;
+        digHIGH[0] = millis();
+        //go through the sequence till the end then reset
+        if(auto_pat_pos < 63){
+          auto_pat_pos++;
+        } else {
+          auto_pat_pos = 0;
+        }
+      } else{
+        
+        //write the output to the dac which is the grid position we are in from the x/y vals at cv in
+        //set our digital outs high for triggers
+        digitalWrite(digPin[0], HIGH);
+        digitalWrite(digPin[1], HIGH);
+        //set the info in our array
+        digState[0] = HIGH;
+        digHIGH[0] = millis();
+      int x_mult = temp_x*8;
+      int grid_pos = x_mult+temp_y;
+      dacOutput(seq_array[grid_pos]);
+      }
+  }else if (mode >= 5) {
+      //This is Playback mode
       //get our x/y values for grid lookup
       int temp_x = analogRead(2) >> 7;
-       int temp_y = analogRead(3) >> 7;
-    //set the clock low
-    clkState = LOW;
-    //write the output to the dac which is the grid position we are in from the x/y vals at cv in
-    int x_mult = temp_x*8;
-    int grid_pos = x_mult+temp_y;
-    
-    dacOutput(seq_array[grid_pos]);
-    //set our digital outs high
-    digitalWrite(digPin[0], HIGH);
-    digitalWrite(digPin[1], HIGH);
-    //set the info in our array
-    digState[0] = HIGH;
-    digHIGH[0] = millis();
-  } 
-    
+      int temp_y = analogRead(3) >> 7;
+      //set the clock low
+      clkState = LOW;
+  
+      //write the output to the dac which is the grid position we are in from the x/y vals at cv in
+      int x_mult = temp_x*8;
+      int grid_pos = x_mult+temp_y;
+      dacOutput(seq_array[grid_pos]);
+      
+      //set our digital outs high for triggers
+      digitalWrite(digPin[0], HIGH);
+      digitalWrite(digPin[1], HIGH);
+      //set the info in our array
+      digState[0] = HIGH;
+      digHIGH[0] = millis();
+    }
+   //end of modes routine 
   } 
 //check to see if we should turn off the digital outs
    if ((millis() - digHIGH[0] > trigTime) && (digState[0] == HIGH)) {

@@ -40,7 +40,7 @@ int cast_out = 0;
 void setup() {
 
   //for debugging
-   Serial.begin(9600);      // open the serial port at 9600 bps:    
+  // Serial.begin(9600);      // open the serial port at 9600 bps:    
 
   // set up the digital (clock) input
   pinMode(clkIn, INPUT);
@@ -69,8 +69,8 @@ void loop()
   //do tha math 
   output = (input / ((255 - 0) / (h_limit - l_limit))) + l_limit;
   //cast our float to an int
-  Serial.print("output ");
-  Serial.println(output);
+ // Serial.print("output ");
+ // Serial.println(output);
   cast_out = static_cast<int>(output);
   //output
   dacOutput(cast_out);

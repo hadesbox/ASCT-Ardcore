@@ -4,7 +4,10 @@
 //
 //  Description: Really strightforward cv scaler, set a min and a max with 
 //  a0 and a1, cv in at a2 and it will scale it to your values. Dont forget that
-//  the ardcore IGNORES NEGATIVE CV. so shift it before input
+//  the ardcore IGNORES NEGATIVE CV. so shift it before input.
+//
+//  TIP: try feeding an lfo into it and then into a quantizer and to a vco, nice way to generate melodic patterns
+//
 //
 //  if min and max cross it inverts
 //
@@ -69,8 +72,6 @@ void loop()
   //do tha math 
   output = (input / ((255 - 0) / (h_limit - l_limit))) + l_limit;
   //cast our float to an int
- // Serial.print("output ");
- // Serial.println(output);
   cast_out = static_cast<int>(output);
   //output
   dacOutput(cast_out);

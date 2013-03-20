@@ -16,6 +16,14 @@ ASCT-Ardcore
 
 	Super basic cv scaler where you set min/max on a0/a1 and cv input on a3. a4 does nothing
 
+#ASCTard004 - Gate/trigger Counter
+
+	counter and flipflop 
+
+#ASCTard005- Experimental LFO
+
+	LFO based on the mozzi arduino objects, you MUST have mozzi installed for this to work and it comes with some caveats, see the sketch for info
+
 
 ## Thanks:
 

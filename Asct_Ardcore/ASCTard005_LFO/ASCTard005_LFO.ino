@@ -84,7 +84,7 @@ float outval; //value to pass to Oscil
 void setup(){
   
   /* Debug */
-   Serial.begin(9600);
+ // Serial.begin(9600);
    
   /* MOZZI SETUP */
   aSin.setFreq(1u); // set the frequency with an unsigned int or a float

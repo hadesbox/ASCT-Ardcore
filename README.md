@@ -24,6 +24,11 @@ ASCT-Ardcore
 
 	LFO based on the mozzi arduino objects, you MUST have mozzi installed for this to work and it comes with some caveats, see the sketch for info
 
+#ASCTard006- Burst Generator
+
+	Simple burst generator, more to do......
+
+
 
 ## Thanks:
 

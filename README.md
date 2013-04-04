@@ -28,6 +28,11 @@ ASCT-Ardcore
 
 	Simple burst generator, more to do......
 
+#ASCTard007- Rat(S)h(*)t
+
+	Trigger generator based very very loosely on some of the ideas in the Buchla/Eardrill Pendulum Ratchet module, designed to replicate some outputs from the a and b output sections, so clock is divided as well as being tested against some number tables. More number tables and counter methods to be added soon (and ones that give more data back so you dont need as fast a clock input, blah blah blah.....)
+
+
 
 
 ## Thanks:

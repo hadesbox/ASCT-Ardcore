@@ -110,6 +110,7 @@ void loop(){
   * PIN11 OUT
   * Pin11 is an analog out so you can use analogwrite(11, x) to write to it
   * This test takes the value of A2 and echoes it to pin11 out 
+  * check out the difference between taking this output from 11 and bit6! (10v p-p on 6, 5 on 11)
   */
   pineleven();
 

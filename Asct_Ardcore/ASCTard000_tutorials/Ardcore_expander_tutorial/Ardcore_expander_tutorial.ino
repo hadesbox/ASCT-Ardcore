@@ -91,7 +91,7 @@ void loop(){
   * A0 controls delay between values, start with this about 9 o'clock
   * This outputs a ramp on the dac and lights up the corresponding bits out on the expander
   * This should hopefully tell you that if you use the dac out you cant use the bits out as seperate digital outs
-  * So if this is needed its good to output what would go to the dac on pin 11 (or bitbang pin 13)
+  * So if lots of gate/trigs are needed and also a cv its good to output what would go to the dac on pin 11 (or bitbang pin 13)
   * and then you can uses bits 0-5 and 7 (arduino outs 5-10 and 12) as extra digital outs.
   * You CANNOT use bit6 (arduino out 11) as a digital out as this is the SAME output as pin 11!!!!
   */
@@ -99,17 +99,25 @@ void loop(){
   
   
   /*
+  * Incerement outs addresses each of the bits of the dac with a port manipulation to set them high directly, as opposed to the above
+  * which takes its output from writing an analog value.
+  * Using this method we can call each of the outputs individually
+  * if you dont want to use port manipulation you could equally do digitalWrite(0-13, HIGH/LOW);
+  */
+ // incrementouts();
+  
+  /*
   * PIN11 OUT
   * Pin11 is an analog out so you can use analogwrite(11, x) to write to it
   * This test takes the value of A2 and echoes it to pin11 out 
   */
-//  pineleven();
+  pineleven();
 
   /*
   * Bitbang13
   * This shows you how to bitbang a port out to provide a cv, IMPORTANT you need to put this through a slew to get a smooth value out!!!!
   */
-  bitbang13();
+ // bitbang13();
 }
 
 void newanalogins(){
@@ -136,6 +144,20 @@ void bitslightshow(){
    dacOutput(i); 
    delay(analogRead(2)); 
   }
+}
+
+//see the port manipulation tutorial for how this works
+void incrementouts(){
+  for(int i = 0; i<10;i++){
+  (i < 5) ? PORTD |= (1<< i+3) : PORTB |= (1<<i-5); //write the output high
+  delay(30);
+    }
+
+  for(int i = 0; i<10;i++){
+  (i < 5) ? PORTD &= ~(1<< i+3) : PORTB &= ~(1<<i-5); //write output low
+  delay(30);
+  }
+  
 }
 
 /*this echos the input at a2 on pin11 */

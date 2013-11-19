@@ -17,7 +17,7 @@ DDRD = DDRD | B11111000;
 DDRB = B111111;
 //this writes all our post values to low for now
 PORTD = B00000000;
-PORTB = B00000000;
+PORTB = B000000;
 }
 
 void loop() {

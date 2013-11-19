@@ -47,7 +47,7 @@ unsigned long digMilli[2] = {0, 0};  // a place to store millis()
 void setup() {
 
   //for debugging
-   Serial.begin(9600);      // open the serial port at 9600 bps:    
+  // Serial.begin(9600);      // open the serial port at 9600 bps:    
 
   // set up the digital (clock) input
   pinMode(clkIn, INPUT);
@@ -144,6 +144,8 @@ int updatemax(){
       avalue[i] = tempval;
       int counterval = countermax[i];
       countermax[i-2] = avalue[i] >> 4;
+    //  Serial.print(" Max ");
+     // Serial.println(countermax[i-2]);
     }
   }
 }
